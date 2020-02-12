@@ -3,11 +3,18 @@
   // Hover to view descriptions of existing attributes.
   "version": "0.2.0",
   "configurations": [
-      {
-          "type": "java",
-          "name": "Debug (Launch)",
-          "request": "launch",
-          "mainClass": "com.ebamberg.coaching.demos.springdata.SpringdataApplication"
-      }
-  ]
+    {
+        "type": "java",
+        "name": "CodeLens (Launch) - SpringCoreApplication",
+        "request": "launch",
+        "mainClass": "com.ebamberg.coaching.demos.springcore.SpringCoreApplication",
+        "projectName": "springboot-coaching"
+    },
+    {
+        "type": "java",
+        "name": "Debug (Launch)",
+        "request": "launch",
+        "mainClass": "com.ebamberg.coaching.demos.springdata.SpringdataApplication"
+    }
+]
 }
