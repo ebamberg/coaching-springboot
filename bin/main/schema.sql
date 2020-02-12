@@ -1,1 +1,0 @@
--- this file when used in classpath is used by spring data to create a schema appart from JPA schema creation

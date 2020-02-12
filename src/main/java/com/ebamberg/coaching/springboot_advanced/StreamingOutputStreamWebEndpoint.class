@@ -1,0 +1,43 @@
+package com.ebamberg.coaching.springboot_advanced;
+
+import java.io.*;
+
+
+@RestController
+public class StreamingOutputStreamWebEndpoint {
+
+  @GetMapping(path="/download/**")
+  public ResponseEntity<StreamingResponseBody> download(HttpServletRequest request) {
+
+
+    // parse the URL paths
+    ResourceUrlProvider urlProvider = (ResourceUrlProvider) request
+        .getAttribute(ResourceUrlProvider.class.getCanonicalName());
+    String filePath = urlProvider.getPathMatcher().extractPathWithinPattern(
+        String.valueOf(request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE)),
+        String.valueOf(request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)));
+
+    InputStream inputStream=new BufferedInputStream(new FileInputStream("Dockerfile"));
+
+    StreamingResponseBody responseBody = outputStream -> {
+
+      int numberOfBytesToWrite;
+      byte[] buffer = new byte[1024];
+      int bytesRead = 0;
+      while ((bytesRead = inputStream.read(buffer)) != -1) {
+        outputStream.write(buffer);
+        buffer = new byte[1024];
+      }
+      outputStream.flush();
+      inputStream.close();
+    };
+
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+filePath)
+        .contentType(  MediaType.parseMediaType(metaData.getContentType()))
+        .contentLength(metaData.getContentLength())
+        .body(responseBody);
+  }
+
+
+}
